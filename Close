@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hamed | Deep Silence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;700;900&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #ff3c3c;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f5f5f5;
+            --text-dim: rgba(255, 255, 255, 0.4);
+        }
+
+        /* منع التحديد والنسخ لجعلها تبدو كتطبيق */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-drag: none;
+            cursor: default;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Cairo', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* خلفية الأنيميشن - المطر الرقمي الخافت */
+        #canvas-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+        }
+
+        .main-card {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 500px;
+            padding: 60px 40px;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            animation: cardEntrance 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(50px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* الرمز التعبيري - عين محبطة متطورة */
+        .icon-box {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .eye-svg {
+            width: 80px;
+            filter: drop-shadow(0 0 20px rgba(255, 60, 60, 0.3));
+        }
+
+        .eye-path {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: drawLine 3s ease forwards infinite alternate;
+        }
+
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* النصوص الفخمة */
+        .dev-name {
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(180deg, #fff 0%, #666 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        /* شريط الحالة النحيف جداً */
+        .status-wrapper {
+            margin-top: 40px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bar-bg {
+            width: 60px;
+            height: 2px;
+            background: rgba(255,255,255,0.05);
+            position: relative;
+        }
+
+        .bar-fill {
+            position: absolute;
+            left: 0; top: 0; height: 100%; width: 20%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            animation: lowEnergy 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes lowEnergy {
+            from { opacity: 0.3; width: 10%; }
+            to { opacity: 1; width: 25%; }
+        }
+
+        /* تذييل احترافي جداً */
+        .footer-info {
+            position: absolute;
+            bottom: 40px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 10px;
+            color: #333;
+            letter-spacing: 2px;
+            width: 100%;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body oncontextmenu="return false;"> <div id="canvas-container">
+        <svg width="100%" height="100%">
+            <circle cx="10%" cy="20%" r="1" fill="white" opacity="0.2">
+                <animate attributeName="opacity" values="0;0.5;0" dur="4s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="80%" cy="70%" r="1" fill="white" opacity="0.1">
+                <animate attributeName="opacity" values="0;0.3;0" dur="7s" repeatCount="indefinite" />
+            </circle>
+        </svg>
+    </div>
+
+    <div class="main-card">
+        <div class="icon-box">
+            <svg class="eye-svg" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+                <path class="eye-path" d="M10 30 Q 50 0 90 30 Q 50 60 10 30" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+                <circle cx="50" cy="30" r="8" fill="var(--accent)" opacity="0.8">
+                    <animate attributeName="r" values="7;9;7" dur="3s" repeatCount="indefinite" />
+                </circle>
+            </svg>
+        </div>
+
+        <span class="dev-name">Developer: Hamed</span>
+        <h1>مُغلق للإصلاح النفسي</h1>
+        
+        <p>
+            المطور حامد حالياً خارج نطاق الخدمة. <br>
+            يتم الآن معالجة "الإحباط البرمجي" وإعادة تشكيل الرؤية.
+        </p>
+
+        <div class="status-wrapper">
+            <div class="bar-bg">
+                <div class="bar-fill"></div>
+            </div>
+            <div style="font-size: 9px; letter-spacing: 3px; color: #444;">SYSTEM_STALLED</div>
+        </div>
+    </div>
+
+    <div class="footer-info">
+        EST. 2026 | ALL SYSTEMS IN HIBERNATION MODE
+    </div>
+
+    <script>
+        // منع اختصارات لوحة المفاتيح (F12, Ctrl+U, etc.)
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 73))) {
+                return false;
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+here<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>نموذج الإجابة</title>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --primary: #38bdf8;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --success: #22c55e;
+      --error: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #020617, #0f172a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+    }
+
+    .card {
+      background: var(--card);
+      width: 100%;
+      max-width: 420px;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    p {
+      margin: 0 0 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      border-radius: 10px;
+      border: 1px solid #1f2933;
+      background: #020617;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--primary);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #020617;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.9;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 16px;
+      font-size: 13px;
+      text-align: center;
+      display: none;
+    }
+
+    .status.success {
+      color: var(--success);
+    }
+
+    .status.error {
+      color: var(--error);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>إرسال إجابة</h1>
+    <p>يرجى تعبئة البيانات ثم الإرسال</p>
+
+    <form id="answerForm">
+      <label for="name">الاسم</label>
+      <input id="name" name="name" type="text" placeholder="اكتب اسمك" required />
+
+      <label for="answer">الإجابة</label>
+      <textarea id="answer" name="answer" placeholder="اكتب إجابتك هنا..." required></textarea>
+
+      <button type="submit" id="submitBtn">إرسال</button>
+    </form>
+
+    <div id="status" class="status"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("answerForm");
+    const statusEl = document.getElementById("status");
+    const btn = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      statusEl.style.display = "none";
+      btn.disabled = true;
+      btn.textContent = "جاري الإرسال...";
+
+      const data = {
+        name: form.name.value.trim(),
+        answer: form.answer.value.trim()
+      };
+
+      try {
+        const res = await fetch(
+          "https://mute-surf-6c87.hamedtest1228.workers.dev",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+          }
+        );
+
+        if (!res.ok) throw new Error("فشل الإرسال");
+
+        statusEl.textContent = "✅ تم إرسال الإجابة بنجاح";
+        statusEl.className = "status success";
+        statusEl.style.display = "block";
+
+        form.reset();
+      } catch (err) {
+        statusEl.textContent = "❌ حدث خطأ، حاول مرة أخرى";
+        statusEl.className = "status error";
+        statusEl.style.display = "block";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "إرسال";
+      }
+    });
+  </script>
+
+</body>
+</html>
